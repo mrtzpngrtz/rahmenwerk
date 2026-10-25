@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Bilderrahmen-Ecken konfigurieren und als STL exportieren.">
+  <title>Rahmenwerk — Generator</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%230b0b0b'/%3E%3Cpath d='M10 10v20h20v-5H15V10z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=17f4d2cd39d6">
+  <script src="app.bundle.js?v=e0e54b64f23c" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="./" aria-label="Rahmenwerk Startseite">rahmenwerk<span>.</span></a>
+    <span class="header-description">Bilderrahmen / Generator</span>
+    <span class="header-unit">mm</span>
+  </header>
+  <main class="workspace">
+    <aside class="settings-panel" aria-label="Einstellungen">
+      <div class="panel-intro"><h1>Parameter</h1><span class="index-label">01—06</span></div>
+      <div class="preset-control"><label for="preset">Vorlage</label><select id="preset"><option value="standard">Acryl / 2 × 2 mm</option><option value="thick">Acryl / 2 × 3 mm</option><option value="large">250 mm / mit Abstand</option><option value="original">Original-STL</option><option value="custom" disabled>Benutzerdefiniert</option></select></div>
+      <form id="settings" novalidate></form>
+      <div class="settings-footer"><button class="text-button" id="reset-button"><span data-icon="reset"></span>Reset</button><div><button class="icon-button" id="import-button" aria-label="Einstellungen laden" title="Laden"><span data-icon="upload"></span></button><button class="icon-button" id="save-button" aria-label="Einstellungen speichern" title="Speichern"><span data-icon="save"></span></button></div></div>
+      <input type="file" id="import-file" accept="application/json,.json" hidden>
+    </aside>
+    <section class="preview-panel" aria-label="Modellvorschau">
+      <div class="preview-toolbar">
+        <div class="view-tabs" role="group" aria-label="Vorschau wählen"><button data-view="corner" class="active" aria-pressed="true"><span>01</span>Ecke</button><button data-view="frame" aria-pressed="false"><span>02</span>Rahmen</button><button data-view="section" aria-pressed="false"><span>03</span>Schnitt</button></div>
+        <div class="view-tools"><button id="home-view" class="icon-button" title="Ansicht zurücksetzen" aria-label="Ansicht zurücksetzen"><span data-icon="home"></span></button><button id="top-view" class="icon-button" title="Draufsicht" aria-label="Draufsicht"><span data-icon="top"></span></button><button id="wireframe" class="icon-button" title="Drahtgitter" aria-label="Drahtgitter anzeigen" aria-pressed="false"><span data-icon="mesh"></span></button></div>
+      </div>
+      <div class="viewport" id="viewport">
+        <div id="canvas-host" aria-label="Drehbare 3D-Vorschau"></div>
+        <div id="section-host" hidden></div>
+        <div id="validation-error" class="validation-error" role="alert" hidden><strong>Ungültige Maße</strong><p></p></div>
+        <div class="view-label" aria-hidden="true"><span id="view-number">01</span><span id="view-name">Ecke</span></div>
+        <div class="color-picker" role="group" aria-label="Vorschaufarbe"><button data-color="#dedede" class="selected" style="--swatch:#dedede" aria-label="Weiß" aria-pressed="true"></button><button data-color="#909090" style="--swatch:#909090" aria-label="Grau" aria-pressed="false"></button><button data-color="#444444" style="--swatch:#444444" aria-label="Graphit" aria-pressed="false"></button><button data-color="#202020" style="--swatch:#202020" aria-label="Schwarz" aria-pressed="false"></button></div>
+        <div id="load-error" class="load-error" role="alert" hidden>WebGL nicht verfügbar.</div>
+      </div>
+      <div class="results-area">
+        <div class="result-grid"><div class="result-card"><span>Außenmaße</span><strong id="stat-size">—</strong></div><div class="result-card"><span>Aufnahme</span><strong id="stat-slot">—</strong></div><div class="result-card"><span>Volumen / Ecke</span><strong id="stat-volume">—</strong></div><div class="result-card"><span>Steg</span><strong id="stat-web">—</strong></div></div>
+        <div class="status-line" id="status" role="status" hidden></div>
+      </div>
+      <footer class="export-bar"><p id="export-summary">4 Ecken / STL</p><div class="export-actions"><button class="button secondary" id="sample-button">Passprobe</button><button class="button primary" id="export-button"><span id="export-label">STL exportieren</span><span data-icon="download"></span></button></div></footer>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <noscript>JavaScript erforderlich.</noscript>
+</body>
+</html>
